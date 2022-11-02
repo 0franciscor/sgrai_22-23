@@ -75,12 +75,12 @@ export default class Player {
     }
 
     setShadow(object) {
-        /* To-do #37 - Set the object and descendants to cast and receive shadows
+        /* To-do #37 - Set the object and descendants to cast and receive shadows*/
         object.traverseVisible(function (child) { // Modifying the scene graph inside the callback is discouraged: https://threejs.org/docs/index.html?q=object3d#api/en/core/Object3D.traverseVisible
             if (child instanceof THREE.Object3D) {
-                child... = ...;
-                child... = ...;
+                child.castShadow = true;
+                child.receiveShadow = true;
             }
-        }); */
+        }); 
     }
 }

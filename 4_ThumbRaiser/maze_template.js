@@ -59,7 +59,7 @@ export default class Maze {
 
                     if (description.map[j][i] == 2 || description.map[j][i] == 3) {
                         wallObject = maze.wall.object.clone();
-                        wallObject.position.set(i - (width/2) + 0.5, 0, j - (height/2));
+                        wallObject.position.set(i - description.size.width/2 + 0.5, 0.5 , j - description.size.height/2);
                         maze.object.add(wallObject);
                     }
 
@@ -78,9 +78,9 @@ export default class Maze {
                     if (description.map[j][i] == 1 || description.map[j][i] == 3) {
                         wallObject = maze.wall.object.clone();
                         wallObject.rotateY(Math.PI/2);
-                        wallObject.position.set(i - (width/2) + 0.5, 0, j - (height/2));
+                        wallObject.position.set(i - description.size.width/2, 0.5 , j - description.size.height/2 + 0.5);
                         maze.object.add(wallObject);
-                    }
+                    } 
                 }
             }
 
@@ -137,7 +137,7 @@ export default class Maze {
     }
 
     /* To-do #23 - Measure the player’s distance to the walls
-        - player position: position
+        - player position: position*/
     distanceToWestWall(position) {
         const indices = this.cartesianToCell(position);
         if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {
@@ -147,30 +147,29 @@ export default class Maze {
     }
 
     distanceToEastWall(position) {
-        const indices = ...;
+        const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (... || ...) {
-            return ...;
-        }
-        return ...;
+        if(this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3)
+            return position.x+1 - this.cellToCartesian(indices).x - this.scale.x / 2.0;
+        return Infinity;
     }
 
     distanceToNorthWall(position) {
-        const indices = ...;
-        if (... || ...) {
-            return ...;
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+            return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
-        return ...;
+        return Infinity
     }
 
     distanceToSouthWall(position) {
-        const indices = ...;
-        ...++;
-        if (... || ...3) {
-            return ...z;
+        const indices = this.cartesianToCell(position);
+        indices[0]++;
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+            return position.z+1  - this.cellToCartesian(indices).z - this.scale.z / 2.0;
         }
-        return ...;
-    } */
+        return Infinity;
+    }
 
     foundExit(position) {
         return false;
@@ -179,7 +178,7 @@ export default class Maze {
             - player position: position
             - exit location: this.exitLocation
             - maze scale: this.scale
-            - remove the previous instruction and replace it with the following one (after completing it)
-        return ... < ... && ... */
+            - remove the previous instruction and replace it with the following one (after completing it)*/
+            return Math.abs(position.x - this.exitLocation.x) < 0.5 * this.scale.x && Math.abs(position.z - this.exitLocation.z) < 0.5 * this.scale.z;
     };
 }
